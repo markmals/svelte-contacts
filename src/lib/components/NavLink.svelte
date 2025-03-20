@@ -1,0 +1,21 @@
+<script module lang="ts">
+    import type { Snippet } from "svelte";
+    import type { HTMLAnchorAttributes } from "svelte/elements";
+
+    export interface Props extends Exclude<HTMLAnchorAttributes, "class"> {
+        children: Snippet;
+        href: string;
+        class: (props: { get isActive(): boolean; get isPending(): boolean }) => string;
+    }
+</script>
+
+<script lang="ts">
+    import { getNavLinkState } from "$lib/state";
+
+    const { children, href, class: getClass, ...props }: Props = $props();
+    const state = getNavLinkState(href);
+</script>
+
+<a {href} class={getClass(state)} {...props}>
+    {@render children()}
+</a>

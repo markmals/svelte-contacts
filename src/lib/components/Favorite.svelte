@@ -1,0 +1,27 @@
+<script module lang="ts">
+    import { enhance } from "$app/forms";
+    import type { Contact } from "$lib/contacts";
+
+    export interface Props {
+        contact: Pick<Contact, "favorite">;
+    }
+</script>
+
+<script lang="ts">
+    const { contact }: Props = $props();
+    const favorite = $derived(contact.favorite);
+</script>
+
+<form method="post" use:enhance>
+    <button
+        aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+        name="favorite"
+        value={favorite ? "false" : "true"}
+    >
+        {#if favorite}
+            ★
+        {:else}
+            ☆
+        {/if}
+    </button>
+</form>
