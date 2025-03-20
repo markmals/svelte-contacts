@@ -6,7 +6,7 @@
     import { navigation } from "$lib/state";
     import NavLink from "$lib/components/NavLink.svelte";
     import { goto } from "$app/navigation";
-    import { submit } from "$lib/utils";
+    import { submit } from "$lib/utils.svelte";
     import { page } from "$app/state";
 
     const { children, data }: LayoutProps = $props();

@@ -1,6 +1,7 @@
 <script module lang="ts">
     import { enhance } from "$app/forms";
     import type { Contact } from "$lib/contacts";
+    import { Fetcher } from "$lib/utils.svelte";
 
     export interface Props {
         contact: Pick<Contact, "favorite">;
@@ -9,10 +10,14 @@
 
 <script lang="ts">
     const { contact }: Props = $props();
-    const favorite = $derived(contact.favorite);
+
+    const fetcher = new Fetcher();
+    const favorite = $derived(
+        fetcher.formData ? fetcher.formData.get("favorite") === "true" : contact.favorite,
+    );
 </script>
 
-<form method="post" use:enhance>
+<form method="post" use:enhance={fetcher.enhance}>
     <button
         aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         name="favorite"
