@@ -12,13 +12,16 @@ export function submit(data: FormData | HTMLFormElement | null, opts: Parameters
     goto(`/?${search}`, opts);
 }
 
+type FetcherProps = Parameters<SubmitFunction>[0];
+type Nullable<T> = T | null;
+
 export class Fetcher {
-    action: URL | null = $state(null);
-    formData: FormData | null = $state(null);
-    formElement: HTMLFormElement | null = $state(null);
-    controller: AbortController | null = $state(null);
-    submitter: HTMLElement | null = $state(null);
-    #canceller: (() => void) | null = $state(null);
+    action: Nullable<FetcherProps["action"]> = $state(null);
+    formData: Nullable<FetcherProps["formData"]> = $state(null);
+    formElement: Nullable<FetcherProps["formElement"]> = $state(null);
+    controller: Nullable<FetcherProps["controller"]> = $state(null);
+    submitter: Nullable<FetcherProps["submitter"]> = $state(null);
+    #canceller: Nullable<FetcherProps["cancel"]> = $state(null);
 
     constructor() {
         $effect(() => {
