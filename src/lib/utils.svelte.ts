@@ -1,4 +1,5 @@
 import { goto } from "$app/navigation";
+import { navigating } from "$app/state";
 import type { SubmitFunction } from "@sveltejs/kit";
 
 export function submit(data: FormData | HTMLFormElement | null, opts: Parameters<typeof goto>[1]) {
@@ -19,7 +20,21 @@ export class Fetcher {
     submitter: HTMLElement | null = $state(null);
     #canceller: (() => void) | null = $state(null);
 
-    enhance = (input: Parameters<SubmitFunction>[0]) => {
+    constructor() {
+        $effect(() => {
+            // Reset all data when the route changes
+            if (navigating.to) {
+                this.action = null;
+                this.formData = null;
+                this.formElement = null;
+                this.controller = null;
+                this.submitter = null;
+                this.#canceller = null;
+            }
+        });
+    }
+
+    handleSubmit: SubmitFunction = input => {
         this.action = input.action;
         this.formData = input.formData;
         this.formElement = input.formElement;

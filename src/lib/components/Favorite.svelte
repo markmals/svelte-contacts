@@ -17,7 +17,7 @@
     );
 </script>
 
-<form method="post" use:enhance={fetcher.enhance}>
+<form method="post" use:enhance={fetcher.handleSubmit}>
     <button
         aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         name="favorite"
