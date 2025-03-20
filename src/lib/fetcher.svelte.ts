@@ -1,16 +1,5 @@
-import { goto } from "$app/navigation";
 import { navigating } from "$app/state";
 import type { SubmitFunction } from "@sveltejs/kit";
-
-export function submit(data: FormData | HTMLFormElement | null, opts: Parameters<typeof goto>[1]) {
-    const formData = data instanceof FormData ? data : new FormData(data ?? undefined);
-    const search = new URLSearchParams();
-    for (const [key, value] of formData.entries()) {
-        search.append(key, value.toString());
-    }
-
-    goto(`/?${search}`, opts);
-}
 
 type FetcherProps = Parameters<SubmitFunction>[0];
 type Nullable<T> = T | null;

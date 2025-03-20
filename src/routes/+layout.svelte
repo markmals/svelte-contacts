@@ -3,11 +3,10 @@
 
     import { enhance } from "$app/forms";
     import type { LayoutProps } from "./$types";
-    import { navigation } from "$lib/state";
     import NavLink from "$lib/components/NavLink.svelte";
     import { goto } from "$app/navigation";
-    import { submit } from "$lib/utils.svelte";
-    import { page } from "$app/state";
+    import { submit } from "$lib/submit";
+    import { navigating, page } from "$app/state";
     import type { FormEventHandler } from "svelte/elements";
 
     const { children, data }: LayoutProps = $props();
@@ -79,6 +78,6 @@
     </nav>
 </div>
 
-<div id="detail" class={navigation.isLoading ? "loading" : ""}>
+<div id="detail" class={navigating.to !== null ? "loading" : ""}>
     {@render children()}
 </div>

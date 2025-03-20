@@ -1,7 +1,7 @@
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import type { Actions } from "./$types";
-import { fakeNetwork, updateContact } from "$lib/contacts";
+import { fakeNetwork, updateContact } from "$lib/db/contacts";
 
 export const load: PageServerLoad = async ({ params, parent }) => {
     const contactId = params.contactId;

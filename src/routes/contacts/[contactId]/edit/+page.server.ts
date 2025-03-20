@@ -1,6 +1,6 @@
 import { error, redirect, fail } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
-import { getContact, updateContact } from "$lib/contacts";
+import { getContact, updateContact } from "$lib/db/contacts";
 
 export const load: PageServerLoad = async ({ params }) => {
     const contact = await getContact(params.contactId);

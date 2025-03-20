@@ -10,10 +10,17 @@
 </script>
 
 <script lang="ts">
-    import { getNavLinkState } from "$lib/state";
+    import { page, navigating } from "$app/state";
 
     const { children, href, class: getClass, ...props }: Props = $props();
-    const state = getNavLinkState(href);
+    const state = {
+        get isActive() {
+            return page.url.pathname === href;
+        },
+        get isPending() {
+            return navigating.to?.url.pathname === href;
+        },
+    };
 </script>
 
 <a {href} class={getClass(state)} {...props}>

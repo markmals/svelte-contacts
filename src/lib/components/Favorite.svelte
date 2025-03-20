@@ -1,7 +1,7 @@
 <script module lang="ts">
     import { enhance } from "$app/forms";
-    import type { Contact } from "$lib/contacts";
-    import { Fetcher } from "$lib/utils.svelte";
+    import type { Contact } from "$lib/db/contacts";
+    import { Fetcher } from "$lib/fetcher.svelte";
 
     export interface Props {
         contact: Pick<Contact, "favorite">;

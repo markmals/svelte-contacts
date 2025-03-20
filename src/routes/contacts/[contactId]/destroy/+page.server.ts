@@ -1,4 +1,4 @@
-import { deleteContact } from "$lib/contacts";
+import { deleteContact } from "$lib/db/contacts";
 import { redirect } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 
