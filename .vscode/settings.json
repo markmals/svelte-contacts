@@ -1,0 +1,70 @@
+{
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+
+    "editor.stickyScroll.enabled": true,
+    "editor.quickSuggestions": {
+        "strings": "on"
+    },
+
+    "biome.enabled": false,
+
+    "eslint.enable": false,
+    // "eslint.codeActionsOnSave.mode": "all",
+    // "eslint.validate": ["ts", "tsx"],
+
+    // "editor.codeActionsOnSave": {
+    //     "source.fixAll": "explicit",
+    //     "source.fixAll.eslint": "explicit"
+    // },
+
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[svelte]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "+layout.svelte": "+layout.ts, +layout.js, +layout.server.ts, +layout.server.js",
+        "+page.svelte": "+page.server.ts, +page.server.js, +page.ts, +page.js",
+        "*.css": "$(capture).css.map, $(capture).*.css",
+        ".env": "*.env, .env.*, .envrc, env.d.ts",
+        "package.json": ".npm*, .nvmrc, .prettier*, .vscode*, package-lock.json, bun.lock*, eslint*, prettier*, tsconfig.*, workspace.json, *.lock",
+        "readme*": "authors, backers*, changelog*, citation*, code_of_conduct*, codeowners, contributing*, contributors, copying, credits, governance.md, history.md, license*, maintainers, readme*, security.md, sponsors*",
+        "vite.config.*": "vitest.config.*, *.plugin.ts, svelte.config.*"
+    },
+    "files.exclude": {
+        "**/.DS_Store": true,
+        ".svelte-kit": true
+    },
+
+    "todohighlight.keywords": [
+        "MARK:",
+        {
+            "text": "FIXME:",
+            "backgroundColor": "#F14848"
+        },
+        {
+            "text": "TODO:",
+            "backgroundColor": "#3593FF"
+        }
+    ],
+    "todohighlight.defaultStyle": {
+        "backgroundColor": "#434B54",
+        "color": "#fff",
+        "borderRadius": "2px"
+    }
+}
