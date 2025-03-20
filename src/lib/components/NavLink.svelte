@@ -15,10 +15,10 @@
     const { children, href, class: getClass, ...props }: Props = $props();
     const state = {
         get isActive() {
-            return page.url.pathname === href;
+            return page.url.pathname === href.split("?")[0];
         },
         get isPending() {
-            return navigating.to?.url.pathname === href;
+            return navigating.to?.url.pathname === href.split("?")[0];
         },
     };
 </script>
