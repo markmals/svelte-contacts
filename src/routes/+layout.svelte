@@ -8,11 +8,24 @@
     import { goto } from "$app/navigation";
     import { submit } from "$lib/utils.svelte";
     import { page } from "$app/state";
+    import type { FormEventHandler } from "svelte/elements";
 
     const { children, data }: LayoutProps = $props();
     const contacts = $derived(data.contacts);
     const q = $derived(data.q);
     const searchParams = $derived(page.url.search);
+
+    function handleInput(event: Parameters<FormEventHandler<HTMLInputElement>>[0]) {
+        // Remove empty query params when searchbox value is empty
+        if (!event.currentTarget.value) {
+            goto("/");
+            return;
+        }
+
+        const isFirstSearch = q === undefined;
+        // FIXME: This causes loss of focus on every keystroke (e.g. event)
+        submit(event.currentTarget.form, { replaceState: !isFirstSearch });
+    }
 </script>
 
 <div id="sidebar">
@@ -27,17 +40,7 @@
                 placeholder="Search"
                 type="search"
                 value={q}
-                oninput={event => {
-                    // Remove empty query params when searchbox value is empty
-                    if (!event.currentTarget.value) {
-                        goto("/");
-                        return;
-                    }
-
-                    const isFirstSearch = q === undefined;
-                    // FIXME: This causes loss of focus on every keystroke (e.g. event)
-                    submit(event.currentTarget.form, { replaceState: !isFirstSearch });
-                }}
+                oninput={handleInput}
             />
             <div aria-hidden="true" hidden id="search-spinner"></div>
         </form>
