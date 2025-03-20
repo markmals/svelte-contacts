@@ -24,6 +24,7 @@ export const load: PageServerLoad = async ({ params, parent }) => {
 export const actions: Actions = {
     default: async ({ request, params }) => {
         const formData = await request.formData();
+        // throw new Error("no!");
         return updateContact(params.contactId, {
             favorite: formData.get("favorite") === "true",
         });
