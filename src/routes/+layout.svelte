@@ -7,10 +7,12 @@
     import NavLink from "$lib/components/NavLink.svelte";
     import { goto } from "$app/navigation";
     import { submit } from "$lib/utils";
+    import { page } from "$app/state";
 
     const { children, data }: LayoutProps = $props();
     const contacts = $derived(data.contacts);
     const q = $derived(data.q);
+    const searchParams = $derived(page.url.search);
 </script>
 
 <div id="sidebar">
@@ -24,6 +26,7 @@
                 name="q"
                 placeholder="Search"
                 type="search"
+                value={q}
                 oninput={event => {
                     // Remove empty query params when searchbox value is empty
                     if (!event.currentTarget.value) {
@@ -48,10 +51,9 @@
         {#if contacts.length}
             <ul>
                 {#each contacts as contact (contact.id)}
-                    {@const path = `/contacts/${contact.id}`}
                     <li>
                         <NavLink
-                            href={path}
+                            href={`/contacts/${contact.id}${searchParams}`}
                             class={state =>
                                 state.isActive ? "active" : state.isPending ? "pending" : ""}
                         >
