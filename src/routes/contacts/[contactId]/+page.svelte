@@ -32,7 +32,7 @@
         {#if contact.bsky}
             <p>
                 <a href={`https://bsky.app/profile/${contact.bsky}`} target="_blank">
-                    {contact.bsky}
+                    @{contact.bsky}
                 </a>
             </p>
         {/if}
