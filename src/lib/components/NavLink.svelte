@@ -10,15 +10,17 @@
 </script>
 
 <script lang="ts">
-    import { page, navigating } from "$app/state";
+    import { Router } from "$lib/router";
 
     const { children, href, class: getClass, ...props }: Props = $props();
+
     const state = {
+        router: new Router(),
         get isActive() {
-            return page.url.pathname === href.split("?")[0];
+            return this.router.isActive(href);
         },
         get isPending() {
-            return navigating.to?.url.pathname === href.split("?")[0];
+            return this.router.isPending(href);
         },
     };
 </script>

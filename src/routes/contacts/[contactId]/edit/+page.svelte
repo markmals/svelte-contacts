@@ -10,6 +10,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>{`Editing ${contact.first} ${contact.last} | Svelte Contacts`}</title>
+</svelte:head>
+
 <form id="contact-form" method="post" use:enhance>
     <p>
         <span>Name</span>

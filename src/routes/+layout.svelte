@@ -1,31 +1,35 @@
 <script lang="ts">
-    import "../styles/index.css";
+    import styles from "../styles/index.css?url";
 
     import { enhance } from "$app/forms";
     import type { LayoutProps } from "./$types";
     import NavLink from "$lib/components/NavLink.svelte";
-    import { goto } from "$app/navigation";
-    import { submit } from "$lib/submit";
-    import { navigating, page } from "$app/state";
-    import type { FormEventHandler } from "svelte/elements";
+    import { Router } from "$lib/router";
 
     const { children, data }: LayoutProps = $props();
     const contacts = $derived(data.contacts);
     const q = $derived(data.q);
-    const searchParams = $derived(page.url.search);
 
-    function handleInput(event: Parameters<FormEventHandler<HTMLInputElement>>[0]) {
+    const router = new Router();
+    const searchParams = $derived(router.location.search);
+
+    function handleInput(event: { currentTarget: HTMLInputElement }) {
         // Remove empty query params when searchbox value is empty
         if (!event.currentTarget.value) {
-            goto("/");
+            router.navigate("/");
             return;
         }
 
-        const isFirstSearch = q === undefined;
+        const isFirstSearch = q === null;
         // FIXME: This causes loss of focus on every keystroke (e.g. event)
-        submit(event.currentTarget.form, { replaceState: !isFirstSearch });
+        router.navigate(event.currentTarget.form, { replaceState: !isFirstSearch });
     }
 </script>
+
+<svelte:head>
+    <link rel="stylesheet" href={styles} />
+    <title>Svelte Contacts</title>
+</svelte:head>
 
 <div id="sidebar">
     <h1>SvelteKit Contacts</h1>
@@ -78,6 +82,6 @@
     </nav>
 </div>
 
-<div id="detail" class={navigating.to !== null ? "loading" : ""}>
+<div id="detail" class={router.navigating.to !== null ? "loading" : ""}>
     {@render children()}
 </div>

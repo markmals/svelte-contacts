@@ -17,11 +17,6 @@ export const actions: Actions = {
         const formData = await request.formData();
         const updates = Object.fromEntries(formData);
 
-        // Trim any leading @'s off of bsky handle
-        if (updates.bsky && typeof updates.bsky === "string") {
-            updates.bsky = updates.bsky.replace(/^@+/, "");
-        }
-
         try {
             await updateContact(params.contactId, updates);
         } catch (err) {

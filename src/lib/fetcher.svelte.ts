@@ -1,5 +1,6 @@
-import { navigating } from "$app/state";
+import { enhance } from "$app/forms";
 import type { SubmitFunction } from "@sveltejs/kit";
+import { Router } from "./router";
 
 type FetcherProps = Parameters<SubmitFunction>[0];
 type Nullable<T> = T | null;
@@ -10,12 +11,18 @@ export class Fetcher {
     formElement: Nullable<FetcherProps["formElement"]> = $state(null);
     controller: Nullable<FetcherProps["controller"]> = $state(null);
     submitter: Nullable<FetcherProps["submitter"]> = $state(null);
+
     #canceller: Nullable<FetcherProps["cancel"]> = $state(null);
+    #router = new Router();
+
+    cancel() {
+        this.#canceller?.();
+    }
 
     constructor() {
         $effect(() => {
             // Reset all data when the route changes
-            if (navigating.to) {
+            if (this.#router.navigating.to) {
                 this.action = null;
                 this.formData = null;
                 this.formElement = null;
@@ -26,7 +33,7 @@ export class Fetcher {
         });
     }
 
-    handleSubmit: SubmitFunction = input => {
+    #handleSubmit: SubmitFunction = input => {
         this.action = input.action;
         this.formData = input.formData;
         this.formElement = input.formElement;
@@ -35,7 +42,7 @@ export class Fetcher {
         this.#canceller = input.cancel;
     };
 
-    cancel() {
-        this.#canceller?.();
+    enhance(form: HTMLFormElement) {
+        return enhance(form, this.#handleSubmit);
     }
 }

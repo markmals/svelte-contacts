@@ -14,6 +14,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>{`${contact.first} ${contact.last} | Svelte Contacts`}</title>
+</svelte:head>
+
 <div id="contact">
     <div>
         <img alt="{contact.first} {contact.last} avatar" src={contact.avatar} />
