@@ -1,18 +1,11 @@
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import type { Actions } from "./$types";
-import { fakeNetwork, updateContact } from "$lib/db/contacts";
+import { getContact, updateContact } from "$lib/db/contacts";
 
-export const load: PageServerLoad = async ({ params, parent }) => {
+export const load: PageServerLoad = async ({ params }) => {
     const contactId = params.contactId;
-
-    // Since we're being smart and calling `parent()` instead of `getContact()` here,
-    // we don't see the loading states, so we have to fake the network latency dirctly
-    // in this loader.
-    await fakeNetwork(`contact:${contactId}`);
-
-    const { contacts } = await parent();
-    const contact = contacts.find(c => c.id === contactId);
+    const contact = await getContact(contactId);
 
     if (!contact) {
         throw error(404, { message: "Not Found" });
