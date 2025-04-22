@@ -1,4 +1,5 @@
 <script module lang="ts">
+    import { isActive, isPending } from "$lib/router";
     import type { Snippet } from "svelte";
     import type { HTMLAnchorAttributes } from "svelte/elements";
 
@@ -10,17 +11,13 @@
 </script>
 
 <script lang="ts">
-    import { Router } from "$lib/router";
-
     const { children, href, class: getClass, ...props }: Props = $props();
-
     const state = {
-        router: new Router(),
         get isActive() {
-            return this.router.isActive(href);
+            return isActive(href);
         },
         get isPending() {
-            return this.router.isPending(href);
+            return isPending(href);
         },
     };
 </script>

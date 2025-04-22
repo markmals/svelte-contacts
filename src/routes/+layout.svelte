@@ -4,25 +4,34 @@
     import { enhance } from "$app/forms";
     import type { LayoutProps } from "./$types";
     import NavLink from "$lib/components/NavLink.svelte";
-    import { Router } from "$lib/router";
+    import { navigating, page } from "$app/state";
+    import { navigate } from "$lib/router";
 
     const { children, data }: LayoutProps = $props();
     const contacts = $derived(data.contacts);
-    const q = $derived(data.q);
+    const query = $derived(data.q);
 
-    const router = new Router();
-    const searchParams = $derived(router.location.search);
+    const searchParams = $derived(page.url.search);
 
-    function handleInput(event: { currentTarget: HTMLInputElement }) {
+    const previousSearchParams = $derived(navigating.from?.url.search || "");
+    const nextSearchParams = $derived(navigating.to?.url.search || "");
+
+    const searching = $derived(
+        Boolean(
+            previousSearchParams !== nextSearchParams && navigating.to?.url.searchParams.has("q"),
+        ),
+    );
+
+    function search(event: { currentTarget: HTMLInputElement }) {
         // Remove empty query params when searchbox value is empty
         if (!event.currentTarget.value) {
-            router.navigate("/");
+            navigate("/");
             return;
         }
 
-        const isFirstSearch = q === null;
+        const isFirstSearch = query === null;
         // FIXME: This causes loss of focus on every keystroke (e.g. event)
-        router.navigate(event.currentTarget.form, { replaceState: !isFirstSearch });
+        navigate(event.currentTarget.form, { replaceState: !isFirstSearch });
     }
 </script>
 
@@ -42,10 +51,12 @@
                 name="q"
                 placeholder="Search"
                 type="search"
-                value={q}
-                oninput={handleInput}
+                value={query}
+                oninput={search}
+                class={searching ? "loading" : ""}
             />
-            <div aria-hidden="true" hidden id="search-spinner"></div>
+            <div aria-hidden={!searching} hidden={!searching} id="search-spinner"></div>
+            <div aria-live="polite" class="sr-only"></div>
         </form>
 
         <form method="post" action="/" use:enhance>
@@ -82,6 +93,6 @@
     </nav>
 </div>
 
-<div id="detail" class={router.navigating.to !== null ? "loading" : ""}>
+<div id="detail" class={navigating.to !== null ? "loading" : ""}>
     {@render children()}
 </div>
